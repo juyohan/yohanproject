@@ -4,7 +4,7 @@
 
 #define MAX 10
 
-int add(int n[]);
+int add(int n[], int count);
 
 int main(void)
 {
@@ -15,25 +15,32 @@ int main(void)
     printf("1부터 10사이의 양수 하나를 고르시오. : ");
     scanf("%d",&a);
 
-    for (i=1; i<a+1; i++)
+    if (a < 0 || a > MAX) {
+        printf("에러: 숫자는 0~10 까지만 허용됩니다.\n");
+        return 1;
+    }
+
+    for (i=0; i<a; i++)
         g[i]=rand()%10;
 
-    sum=add(g);
+    sum=add(g, a);
 
-    for (i=1; i<a+1; i++)
+    for (i=0; i<a; i++) {
         printf("%d\n",g[i]);
+    }
 
     printf("전체 합은 %d 입니다.\n",sum);
 
     return 0;
 }
 
-int add(int n[])
+int add(int n[], int count)
 {
     int i,result=0;
     
-    for (i=1; i<MAX; i++)
+    for (i=0; i<count; i++) {
         result += n[i];
+    }
 
     return result;
 }
