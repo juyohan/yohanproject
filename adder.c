@@ -7,6 +7,7 @@
 int add(int n[], int count);
 
 int main(void) {
+ 
   int i = 0, a;
   int sum, g[MAX];
   float avg;
