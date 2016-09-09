@@ -6,7 +6,7 @@
 
 #define MAX 5
 
-int lotto(num);
+int lotto();
 
 int main(void)
 {
@@ -18,7 +18,7 @@ int main(void)
     leg = strlen(inp);
 
     if (leg == 3){
-        lotto();
+    int a = lotto();
     }
     else if (leg == 2){
         printf("로또 프로그램을 종료합니다.\n");
@@ -26,7 +26,7 @@ int main(void)
     return 0;
 }
 
-int lotto(num)
+int lotto()
 {
     int index=0;
     srand(time(NULL));
@@ -36,4 +36,5 @@ int lotto(num)
         printf("\n");
         sleep(2);
     }
+    return 1;
 }
