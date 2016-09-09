@@ -1,19 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
+#include <string.h>
 
-#define MAX 5 
+#define MAX 5
+
+int lotto(num);
 
 int main(void)
 {
-    int index = 0;
-
+    int leg;
+    char inp[5];
     srand(time(NULL));
-    printf("이 예제는 rand()함수를 이용하여 5개의 난수를 생성하는 예제입니다.\n");
+    printf("로또 프로그램을 실행시키시겠습니까?\n");
+    printf("실행하실려면 'yes'를 안하시려면 'no'를 입력해주세요. :");
+    scanf("%s",inp);
+    leg = strlen(inp);
 
-    for (index=0;index<MAX;index++)
-    printf("%4d",1 + (rand() % 45));
-    printf("\n");
-
+    if (leg == 3){
+        lotto();
+    }
+    else if (leg == 2){
+        printf("로또 프로그램을 종료합니다.");
+        break;
+    }
     return 0;
+}
+
+int lotto(num)
+{
+    int index=0;
+
+    for (index=0;index<MAX;index++){
+        printf("%d",1 + (rand() % 45));
+        printf("\n");
+        sleep(2);
+    }
 }
