@@ -3,10 +3,8 @@
 
 int main()
 {
-    char name[100];
+    char name[] = "korea nazarene university";
     int len,i;
-    printf("이름을 영어로 입력하세요. :");
-    scanf("%s",name);
 
     len = strlen(name);
     for (i=len-1;i>=0;i--)
