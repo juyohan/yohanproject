@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+//
 int main()
 {
     char name[] = "주요한";
