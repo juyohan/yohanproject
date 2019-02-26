@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+// comment
 int main()
 {
     int contestants[] = {1, 2, 3};
