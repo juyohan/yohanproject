@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void two(int num){
+int main(){
     int story[20] = {0,};
+    int num;
+
+    printf("2진법으로 바꾸실 숫자를 적으시오. : ");
+    scanf("%d",&num);
 
     int position = 0;
     while (1){
