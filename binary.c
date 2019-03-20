@@ -10,7 +10,7 @@ int main(){
 
     int position = 0;
 
-    if (num > 0){
+    if (num >= 0){
 
     while (1){
         story[position] = num % 2; // 2로 나눈 몫 값을 저장함
@@ -30,7 +30,9 @@ int main(){
     }
 
 else if (num < 0){
-    num = -num ; // 음수를 양수로 변환
+
+    num = -num; // 음수를 양수로 변환
+
     while (1){
         story[position] = num % 2; // 2로 나눈 몫 값을 저장함
         num = num / 2; // 2로 나눈 나머지 값을 저장함
@@ -43,10 +45,11 @@ else if (num < 0){
     for (int i = position-1 ; i >= 0 ; i--) // 배열의 역순으로 출력
     {
         story[i] = !story[i]; // 1의 보수로 바꿔줌
-        
+    }
+    for (int i = position-1 ; i >=0 ; i--){
         if (story[i] == 0){
             story[i] += 1; // 끝자리가 0이면 1을 더해줌
-            i = -1;
+            i = -3;
         }
         else if (story[i] == 1){
             story[i]=0;
