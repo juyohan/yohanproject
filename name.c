@@ -1,17 +1,21 @@
 #include <stdio.h>
 
+struct Introduction {
+    char name[10], major[15];
+    int num;
+} i;
+
 int main(){
-    int a,i=1;
-    char name[10];
+    struct Introduction i;
 
-    printf("당신의 이름은 무엇입니까? : ");
-    scanf("%s",name);
+    printf("이름을 입력해주세요. : ");
+    scanf("%s",i.name);
+    printf("학과를 적어주세요. : ");
+    scanf("%s",i.major);
+    printf("학번을 적어주세요. : ");
+    scanf("%d",&i.num);
 
-    printf("이름을 몇 번 출력하시겠습니까? : ");
-    scanf("%d",&a);
+    printf("이름 : %s\n학과 : %s\n학번 : %d\n",i.name,i.major,i.num);
 
-    for (i=1;i<=a;i++){
-        printf("%s\n",name);
-    }
     return 0;
 }
