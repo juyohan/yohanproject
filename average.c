@@ -17,7 +17,7 @@ int main()
     scanf("%lf%lf%lf",&kor,&eng,&math);
     sum = add(&kor,&eng,&math);
     avg = mean(sum);
-    printf("합 : %lf\t 평균 : %.2lf\n",sum,avg);
+    printf("합 : %.2lf\t 평균 : %.2lf\n",sum,avg);
     }
     return 0;
 }
