@@ -2,8 +2,7 @@
 
 int plus(int num); // 입력받은 양수를 2진법으로 변환
 int minus(int num); // 입력받은 음수를 1의 보수로 변환
-// int store(int i); // 1의 보수로 변환 뒤 1을 더해주는 과정
-int print(int j); // 1의 보수에서 2의 보수로 변환해서 출력
+int print(int j); // 변환된 값을 출력
 
 int story[32];
 int i;
@@ -11,8 +10,7 @@ int i;
 int main () {
     int num;
     int j = 0;
-    int l = 0;
-    int k = 0;
+    int k = i;
 
     printf("2진수로 바꿀 숫자를 입력해주세요. : ");
     scanf("%d",&num); // 매개변수에 값 입력
@@ -24,19 +22,20 @@ int main () {
     else if(num<0){ // 입력받은 숫자가 음수일떼
         num = -num; // 입력받은 음수를 양수로 변환
         minus(num); 
-        j = i;
-        k=i;
-        // store(i);
-        for (int l=i; l<=i; l++){
-            if (story[l] == 0){
+
+        int l=i; // i값을 불러옴
+        for (int l=i; l>=0; l--){ 
+            if (story[l] == 0){ // 자리가 0이면 1을 더해줌
                 story[l] = story[l] + 1;
-                break;
+                break; // 반복문 탈출
             }
-                else if (story[l] == 1){
+                else if (story[l] == 1){ // 자리가 1이면 0으로                             // 바꿔줌
                     story[l] = 0;
                 }
         }
-        print(j);
+        if (story[k] == 0) // 15와 같이 1111의 음수인 -15와 같은                       // 수를 2진법으로 표현하기 위해 앞자리를                        // 추가하고 1로 바꿔줌
+                story[k] = 1;
+        print(j); // 재귀함수를 이용해 출력
     }
     return 0;
 }
@@ -62,28 +61,11 @@ else {
 return 0;
 } 
 
-// int store(int i){
-//     if (i == 0)
-//     return 0;
-
-//     else if (story[i] == 0){
-//     story[i] = story[i] + 1;
-//     // return 1;
-//     }
-
- //     // else if (story[i] == 1)
- //     // story[i] = 0;
-
-//     // printf("%d",story[i]);
-
-//     return store(i-1);
-// }
-
 int print(int j){
-    if (j==0)
+    if (j==i+1) // j의 값이 i+1이 되면 재귀함수 스탑
     return 0;
 
-    printf("%d",story[j]);
+    printf("%d",story[j]); // story의 값들을 출력
 
-    return print(j-1);
-}
+    return print(j+1); // j의 값에 1을 더하고 다시 print재귀함수를                       // 불러옴
+} 
