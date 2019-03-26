@@ -2,18 +2,21 @@
 #include <string.h>
 
 int main() {
-    char name[50];
-    
-    printf("자신의 영어 이름을 입력해주세요 : ");
-    fgets(name,sizeof(name),stdin); // fgets로 입력받음
-    // name[strlen(name)-1] = 0;
+    char name[30];
+    int n;
 
-    for (int i = 0; i<50; i++){
-    if (name[i]>='A' && name[i]<='Z')
-        name[i] += 32; // 대문자 아스키코드 값에 32를 더해 소문자로 바꿔줌
-        else if (name[i]>='a' && name[i]<='z')
-        name[i] -= 32; // 소문자 아스키코드 값에 32를 빼서 대문자로 바궈줌
+    printf("영어 이름을 적어주세요. : ");
+    fgets(name, sizeof(name),stdin);
+
+    printf("소대문자를 서로 변환시킵니다. \n");
+
+    for (int i = 0; i <=30; i++){
+        if (name[i] >= 'A' && name[i] <= 'Z') // 대문자 아스키코드의 값에 32를 더해줌
+        name[i] += 32;
+        else if(name[i] >= 'a' && name[i] <='z') // 소문자 아스키코드의 값에 32를 빼줌
+        name[i] -= 32;
+        printf("%c",name[i]);
     }
-    printf("대소문자를 변환합니다. : %s",name);
+
     return 0;
 }
