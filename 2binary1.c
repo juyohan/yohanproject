@@ -10,7 +10,7 @@ int i;
 int main () {
     int num;
     int j = 0;
-    int k = i;
+    int k = i; // 증감된 i의 값을 k값에 대입
 
     printf("2진수로 바꿀 숫자를 입력해주세요. : ");
     scanf("%d",&num); // 매개변수에 값 입력
