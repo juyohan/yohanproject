@@ -1,3 +1,4 @@
+// 함수를 이용한 평균
 #include <stdio.h>
 
 double add(double *kor, double *eng, double *math){
