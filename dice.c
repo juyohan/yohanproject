@@ -3,7 +3,7 @@
 #include <time.h>
 
 int main(){
-    static int num1,num2,num3,num4,num5,num6;
+    static int num1,num2,num3,num4,num5,num6; // 증감하는 값들을 계속 유지시키기                                               위해 정적변수를 사용함.
     int num,random;
 
     srand(time(NULL)); // 난수 설정
