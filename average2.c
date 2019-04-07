@@ -33,7 +33,7 @@ int main(){
     }
     return 0;
 }
-
+// 1반
 int class_1(void){
     students_num s1;
     memset(&s1, 0, sizeof(s1));
@@ -98,7 +98,7 @@ int class_1(void){
     }
      return 0;
 }
-
+// 2반
 int class_2(void){
     students_num s1;
     memset(&s1, 0, sizeof(s1));
