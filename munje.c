@@ -43,5 +43,7 @@
 #include <stdio.h>
 
 int main(){
-    
+    char str;
+    printf("문자열을 입력해주세요 : ");
+    scanf("[^/n]",str);
 }
