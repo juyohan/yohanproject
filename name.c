@@ -24,19 +24,29 @@
 
 // 배열 초기화를 사용해 출력
 
-struct name_1{
-    char name[10];
-    char major[10];
-    char num[10];
-} n1;
+// struct name_1{
+//     char name[10];
+//     char major[10];
+//     char num[10];
+// } n1;
+
+// int main(){
+//     struct n1;
+
+//     printf("이름, 학번, 학과를 입력해주세요. : ");
+//     scanf("%s %s %s",n1.name,n1.major,n1.num);
+
+//     printf("이름 : %s\n학번 : %s\n학과 : %s",n1.name,n1.num,n1.major);
+
+//     return 0;
+// }
 
 int main(){
-    struct n1;
+    char name[10] = "주요한";
+    char address[100] = "경기도 화성시 동탄순환대로 21길 15, 1342동 2502호";
+    char major[10] = "IT학부";
 
-    printf("이름, 학번, 학과를 입력해주세요. : ");
-    scanf("%s %s %s",n1.name,n1.major,n1.num);
-
-    printf("이름 : %s\n학번 : %s\n학과 : %s",n1.name,n1.num,n1.major);
+    printf("이름 : %s\n주소 : %s\n학과 : %s\n",name,address,major);
 
     return 0;
 }
