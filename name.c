@@ -42,11 +42,12 @@
 // }
 
 int main(){
-    char name[10] = "주요한";
-    char address[100] = "경기도 화성시 동탄순환대로 21길 15, 1342동 2502호";
-    char major[10] = "IT학부";
+    char *name = "주요한";
+    char *address = "경기도 화성시 동탄순환대로 21길 15, 1342동 2502호";
+    char *major = "IT학부";
 
     printf("이름 : %s\n주소 : %s\n학과 : %s\n",name,address,major);
 
     return 0;
 }
+
