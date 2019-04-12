@@ -8,7 +8,7 @@ typedef struct information{
     double avg_;
 } infor_;
 
-int num;
+static int num;
 
 int main(){
     infor_ i1;
