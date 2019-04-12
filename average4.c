@@ -8,10 +8,10 @@ typedef struct information{
     double avg_;
 } infor_;
 
-static int num;
-
 int main(){
     infor_ i1;
+
+    int num;
 
     printf("몇 명의 학생의 정보를 입력하시겠습니까? : ");
     scanf("%d",&num);
