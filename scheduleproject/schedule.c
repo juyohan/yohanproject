@@ -14,18 +14,18 @@
 
 int display_menu(void); // 메인메뉴를 보여줌
 int membership_store(void); // 회원가입
-int login(void);
-int main_menu(void);
-int main_1(void);
-int schedule_watch(void);
-int schedule_search(void);
-int schedule_add(void);
-int schedule_delete(void);
-int schedule_store(void);
-int schedule_import(void);
+int login(void); // 로그인
+int main_menu(void); // 로그인 후 메인메뉴
+int main_1(void); // 로그인 후 메인메뉴의 메인
+int schedule_watch(void); // 시간표 확인
+int schedule_search(void); // 시간표 검색
+int schedule_add(void); // 시간표 추가
+int schedule_delete(void); // 시간표 삭제 
+int schedule_store(void); // 시간표 저장
+int schedule_import(void); // 시간표 입력
 
 #pragma pack (push, 1)
-typedef struct information {
+typedef struct information { // 회원정보를 입력받을 구조체
     char name[NAME_len];
     char birth[BIRTH_len];
     char id[ID_len];
@@ -34,7 +34,7 @@ typedef struct information {
 } temp_infor;
 #pragma pack(pop)
 
-typedef struct subject{
+typedef struct subject{ // 시간표를 입력받을 포인터 구조체 배열
     char *name[scheudule_time];
     char sub_name[30];
 } temp_sub;
@@ -45,19 +45,19 @@ int main_1(void){
         int menu_1 = main_menu();
 
         if (menu_1 == 1)
-        schedule_watch();
+        schedule_watch(); // 시간표 보기
         else if (menu_1 == 2)
-        schedule_add();
+        schedule_add(); // 시간표 입력
         else if (menu_1 == 3)
-        schedule_import();
+        schedule_import(); // 시간표 추가
         else if (menu_1 == 4)
-        schedule_delete();
+        schedule_delete(); // 시간표 삭제
         else if (menu_1 == 5)
-        schedule_search();
+        schedule_search(); // 시간표 검색
         else if (menu_1 == 6)
-        schedule_store();
+        schedule_store(); // 시간표 저장
         else if (menu_1 == 7)
-        exit(1);
+        exit(1); // 나가기
     }
     return 0;
 }
@@ -256,7 +256,7 @@ int schedule_store(void){
 
     FILE *fp2 = fopen(t1.name,"w");
 
-    for (int j = 0 ; j < Day_len ; j++){
+    for (int j = 0 ; j < Day_len ; j++){ // 동적할당 줬던걸 해제
                 for (int i = 0; i<scheudule_time; i++){
                     free(s1[j]->name[i]);
                 }
@@ -270,17 +270,17 @@ int main(){
     int menu = display_menu();
 
         if (menu == 1){
-            login();
-            main_1();
+            login(); // 로그인메뉴로
+            main_1(); // 로그인이 되었다면 후의 메인메뉴로
         }
         else if (menu == 2){
-            printf("니ㅏ니ㅓㄴ라");
+            printf("니ㅏ니ㅓㄴ라"); // 사용 방법
         }
         else if (menu == 3) {
-            membership_store();
+            membership_store(); // 회원정보 확인
         }
         else if (menu==4){
-           break;
+           break; // 나가기
         }
     }
 return 0;
