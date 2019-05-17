@@ -9,12 +9,13 @@
 #define ID_len 30
 #define PASSWORD_len 30
 #define BIRTH_len 20
-#define scheudule_time 10
+#define schedule_time 10
 #define Day_len 6
 
 int display_menu(void); // 메인메뉴를 보여줌
 int membership_store(void); // 회원가입
 int login(void); // 로그인
+int manual(void); // 설명서
 int main_menu(void); // 로그인 후 메인메뉴
 int main_1(void); // 로그인 후 메인메뉴의 메인
 int schedule_watch(void); // 시간표 확인
@@ -23,6 +24,7 @@ int schedule_add(void); // 시간표 추가
 int schedule_delete(void); // 시간표 삭제 
 int schedule_store(void); // 시간표 저장
 int schedule_import(void); // 시간표 입력
+int schedule_call(void); // 시간표 불러오기
 
 #pragma pack (push, 1)
 typedef struct information { // 회원정보를 입력받을 구조체
@@ -35,7 +37,7 @@ typedef struct information { // 회원정보를 입력받을 구조체
 #pragma pack(pop)
 
 typedef struct subject{ // 시간표를 입력받을 포인터 구조체 배열
-    char *name[scheudule_time];
+    char *name[schedule_time];
     char sub_name[30];
 } temp_sub;
 
@@ -57,6 +59,8 @@ int main_1(void){
         else if (menu_1 == 6)
         schedule_store(); // 시간표 저장
         else if (menu_1 == 7)
+        schedule_call(); // 시간표 불러오기
+        else if (menu_1 == 8)
         exit(1); // 나가기
     }
     return 0;
@@ -73,11 +77,11 @@ int main_menu(void){
     printf("\n\t\t  1. 시간표 보기   2. 시간표 입력");
     printf("\n\n\t\t  3. 시간표 추가   4. 시간표 삭제");
     printf("\n\n\t\t  5. 시간표 검색   6. 시간표 저장");
-    printf("\n\n\t\t  7. 종료");
+    printf("\n\n\t\t  7. 시간표 불러오기   8. 나가기");
     printf("\n\n\t\t     어디로 가시겠습니까? : ");
     scanf("%d",&menu2_num);
 
-    if (menu2_num<1||menu2_num>7){
+    if (menu2_num<1||menu2_num>8){
     printf("\n\n\t\t\t잘못입력하셨습니다. \n");
     continue;
     }
@@ -104,7 +108,7 @@ int schedule_watch(void){
                 scanf("%d",&num);
 
                 if (num < Day_len){ // 5보다 작으면 실행
-                    for (int i =0 ;i <scheudule_time; i++){
+                    for (int i =0 ;i <schedule_time; i++){
                     printf("%02d교시 : %s\n",i+1,s1[num]->name[i]);
                     }
                     continue; // 다시 while문으로
@@ -125,7 +129,6 @@ int schedule_watch(void){
 }
 
 int schedule_add(void){
-
     temp_sub *s1[Day_len]; // 구조체 포인터 배열로 요일을 정함
 
     char empty = '-';
@@ -139,17 +142,17 @@ int schedule_add(void){
     }
 
     while (1){
-        printf("1.월요일, 2.화요일, 3.수요일, 4.목요일, 5.금요일,　6.나가기\n");
+        printf("1.월요일, 2.화요일, 3.수요일, 4.목요일, 5.금요일,　6.뒤로가기\n");
         printf("입력하실 요일을 적어주세요. : ");
         scanf("%d",&k); 
 
         if (k<Day_len){ // 요일의 숫자를 적으면 실행
-            while (n<scheudule_time){
+            while (n<schedule_time){
                 printf("과목을 입력하시려면 1번을, 끝내시려면 0번을 눌러주세요. : ");
                 scanf("%d",&ext); // 숫자를 입력받음
                 if (ext == 0){ // ext값이 0이면 실행
-                    if (n < scheudule_time){ // n의 값이 0~9사이라면 실행
-                        while (n<scheudule_time){ // 마지막 빈 시간을 공백으로 채워줌
+                    if (n < schedule_time){ // n의 값이 0~9사이라면 실행
+                        while (n<schedule_time){ // 마지막 빈 시간을 공백으로 채워줌
                             char* emp = (char*)malloc(sizeof (char)*1);
                             strcpy(emp,&empty);
                             s1[k]->name[n] = emp;
@@ -223,6 +226,7 @@ int schedule_import(void){
 }
 
 int schedule_search(void){
+    temp_sub *s1[Day_len];
     temp_infor t1;
 
     char mem_name[10];
@@ -255,12 +259,29 @@ int schedule_store(void){
     printf("입력하신 시간표를 저장합니다. \n");
 
     FILE *fp2 = fopen(t1.name,"w");
+    FILE *fp3 = fopen(t1.id,"w");
 
-    for (int j = 0 ; j < Day_len ; j++){ // 동적할당 줬던걸 해제
-                for (int i = 0; i<scheudule_time; i++){
-                    free(s1[j]->name[i]);
-                }
-            }
+    for (int i = 0; i < Day_len ; i++){
+        for (int j = 0 ; j < schedule_time ; j ++){
+        fwrite(s1[i]->name[j],strlen(s1[i]->name[j]),1,fp2);
+        fwrite(s1[i]->name[j],strlen(s1[i]->name[j]),1,fp3);
+        }
+    }
+
+    fclose(fp2);
+    fclose(fp3);
+
+    for (int j = 0 ; j < Day_len ; j++){ // 동적할당 줬던 걸 해제
+        for (int i = 0; i<schedule_time; i++){
+            free(s1[j]->name[i]);
+        }
+    }
+    printf("입력하신 정보를 초기화 합니다.\n");
+
+    return 0;
+}
+
+int schedule_call(void){
 
     return 0;
 }
@@ -274,7 +295,7 @@ int main(){
             main_1(); // 로그인이 되었다면 후의 메인메뉴로
         }
         else if (menu == 2){
-            printf("니ㅏ니ㅓㄴ라"); // 사용 방법
+            manual(); // 사용 설명서
         }
         else if (menu == 3) {
             membership_store(); // 회원정보 확인
@@ -308,7 +329,7 @@ int display_menu(void){
     return 0;
 }
 
-int membership_store(void){
+int membership_store(void){ // 추가 -> 이미 존재하는 아이디일때 다시 입력하도록. 
     temp_infor t1;
 
     memset(&t1, 0, sizeof(t1));
@@ -386,6 +407,32 @@ int login(void){
      }
     }
     fclose(fp);
+    }
+    return 0;
+}
+
+int manual(void){
+    int back=0;
+
+    printf(" 사용 설명서 \n");
+    printf("1. 회원가입이 되어있지 않다면 회원가입을 한다.\n");
+    printf("2. 회원가입을 한 후 로그인을 하고 '시간표 입력' <- 여기에 들어간다.\n");
+    printf("3. 시간표 입력이 끝나고 수정이 필요하면 '추가', '삭제' <- 여기에 들어가서 한다.\n");
+    printf("4. 시간표 입력이나 수정이 다 끝나고 제대로 입력이 되어있는지 확인하기 위해 '시간표 보기' <- 여기에 들어가서 확인한다. \n");
+    printf("5. 확인까지 다 끝났으면 '시간표 저장' <- 여기에 들어가서 저장한다.\n");
+    printf("※ 중요 ※\n만약 시간표 입력을 해둔 사용자라면 '시간표 불러오기' <- 여기에 들어가서 불러오고 수정을 한다.\n");
+
+    while(1){
+        printf("다 읽으셨으면 뒤로가기(1)을 입력해주세요. : ");
+        scanf("%d",&back);
+
+        if (back == 1){
+            continue;
+        }
+
+        else {
+            printf("잘못입력하셨습니다.\n다시 입력해주세요. \n");
+        }
     }
     return 0;
 }
