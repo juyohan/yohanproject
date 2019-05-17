@@ -10,18 +10,19 @@ int main(){
     static int n =0;
     int time_ = 0,ext = 0;
     int time_1 = 0;
-    int l = 0,num=0;
+    int l = 0;
 
     while (n<arraySize){
         printf("듣는 과목이 없으시면 0번을, 계속 입력하시려면 1번을 눌러주세요. : ");
         scanf("%d",&ext); // 숫자를 입력받음
         if (ext == 0){ // ext값이 0이면 실행
-            if (n < 10) // n의 값이 0~9사이라면 실행
-            while (n<arraySize){
-                char* emp = (char*)malloc(sizeof (char)*1);
-                strcpy(emp,&empty);
-                name[n] = emp;
-                n++;
+            if (n < arraySize){ // n의 값이 0~9사이라면 실행
+                while (n<arraySize){
+                    char* emp = (char*)malloc(sizeof (char)*1);
+                    strcpy(emp,&empty);
+                    name[n] = emp;
+                    n++;
+                }
             }
             else
             break;
@@ -35,8 +36,6 @@ int main(){
             time_ += n; //시간을 계속 유지
             printf("다음 수업까지 빈 시간은 몇 시간 입니까?(없으면 0) : ");
             scanf("%d",&time_1);
-            num = time_1; // time_1의 값을 num에 대입
-            time_1 += n;
 
             if (l>0){ // l의 값이 0 이상이면
                 while (n<time_){ // 정적변수 n의 값을 i에 대입시켜 반복문 실행
@@ -45,13 +44,17 @@ int main(){
                 name[n] = sub; // 각 교시에 맞게 대입시키고 2중 포인터 사용
                 n++;
                 }
-                time_1 += n; // 위에나온 값에서 다시 더해줌
-                while (n<time_1){
-                    char* emp_ = (char*)malloc(sizeof (char)*1);
-                    strcpy(emp_,&empty);
-                    name[n] = emp_;
-                    n++;
+                if (time_1!=0){
+                    time_1 += n; // 위에나온 값에서 다시 더해줌
+                    while (n<time_1){
+                        char* emp_ = (char*)malloc(sizeof (char)*1);
+                        strcpy(emp_,&empty);
+                        name[n] = emp_;
+                        n++;
+                    }
                 }
+                else if (time_1==0)
+                continue;
             }
             else
             {
