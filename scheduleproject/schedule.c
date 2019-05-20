@@ -74,6 +74,7 @@ int main_1(void){
                 free(s1[j]);
             }
          exit(1); // 나가기
+        }
     }
     return 0;
 }
@@ -509,16 +510,6 @@ int schedule_store(void){
 
     fclose(fp2);
     fclose(fp3);
-
-    // for (int j = 0 ; j <= Day_len ; j++){ // 동적할당 줬던 걸 해제
-    //     for (int i = 0; i<schedule_time; i++){
-    //         free(s1[j]->name[i]);
-    //     }
-    //     free(s1[j]);
-    // }
-    
-    // printf("\n\t\t\t\t    입력하신 정보를 초기화합니다. \n");
-
     return 0;
 }
 
