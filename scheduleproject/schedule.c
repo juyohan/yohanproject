@@ -243,7 +243,7 @@ int schedule_add(void){ // 잘못입력했을 때 뒤로 넘어가는게 있으�
     return 0;
 }
 
-int schedule_delete(void){
+int schedule_delete(void){ // 시간표 삭제
     temp_sub *s1[Day_len];
 
     int num=0, Day=0, SUB=0, TIME=0, n=0, l=0;
@@ -256,25 +256,25 @@ int schedule_delete(void){
         printf("\n\n\t\t\t\t     어디로 가시겠습니까? : ");
         scanf("%d",&num);
 
-        if (num==1){
+        if (num==1){ // 요일삭제
             while (1){
                 printf("\n\t\t\t\t\t시간표 관리 프로그램");
                 printf("\n\t\t\t\t==================================="); 
                 printf("\n\t\t\t\t    1.월요일  2.화요일  3.수요일\n\t\t\t\t    4.목요일  5.금요일  6.뒤로가기\n");
                 printf("\n\t\t\t\t 무슨 요일을 삭제하시겠습니까? : ");
                 scanf("%d",&Day);
-                Day -= 1;
+                Day -= 1; // 배열을 위해 빼줌
 
-                if (Day == 5){
+                if (Day == 5){ // 뒤로가기
                     break;
                 }
 
-                else if (Day<5){
-                    for (int i = 0; i<schedule_time; i++){
+                else if (Day<5){ 
+                    for (int i = 0; i<schedule_time; i++){ // 해당 요일의 메모리 값을 초기화 시킴
                         free(s1[Day]->name[i]);
                     }
 
-                    while(n<schedule_time){
+                    while(n<schedule_time){ // 초기화 시키고 비어있다는 표시인 - <- 이거를 대입
                         char* emt_ = (char*)malloc(sizeof(char)*1);
                         strcpy(emt_,&empty);
                         s1[Day]->name[n] = emt_;
@@ -282,44 +282,43 @@ int schedule_delete(void){
                     }
 
                     printf("\n\n\t\t\t\t\t삭제가 완료되었습니다.\n");
-                    break;
+                    break; // 삭제완료되면 뒤로
                 }
 
-                else {
+                else { 
                     printf("\n\t\t\t\t\t  잘못입력하셨습니다.\n\t\t\t\t\t  다시 입력해주세요. \n");
                 }
             }
         }
 
-        else if (num==2){
+        else if (num==2){ // 과목 삭제
             while(1){
                 printf("\n\t\t\t\t\t시간표 관리 프로그램");
                 printf("\n\t\t\t\t==================================="); 
                 printf("\n\t\t\t\t    1.월요일  2.화요일  3.수요일\n\t\t\t\t    4.목요일  5.금요일  6.뒤로가기\n");
                 printf("\n\t\t\t     무슨 요일의 과목을 삭제하시겠습니까? : ");
                 scanf("%d",&Day);
-                Day -= 1;
+                Day -= 1; // 배열을 위해 빼줌
 
-                if (Day == 5){
+                if (Day == 5){ // 뒤로가기
                     break;
                 }
 
                 else if(Day < 5){
+                    l = strlen(s1[Day]->name[0]); // 해당 요일에 값이 있는지 확인하기 위해 길이를 구함
 
-                    l = strlen(s1[Day]->name[0]);
-
-                    if (l>0){
+                    if (l>0){ // 해당 요일의 길이가 있다면
                         printf("\n\t\t\t\t     몇 교시의 과목입니까? : ");
                         scanf("%d",&SUB);
-                        SUB -= 1;
+                        SUB -= 1; // 배열을 위해 빼줌
                         printf("\n\t\t\t\t   몇 시간 삭제하시겠습니까? : ");
                         scanf("%d",&TIME);
 
-                        for (int i = SUB; i < SUB+TIME; i++){
+                        for (int i = SUB; i < SUB+TIME; i++){ // 해당 시간표 메모리 해제
                             free(s1[Day]->name[i]);
                         }
 
-                        while(SUB<SUB+TIME){
+                        while(SUB<SUB+TIME){ // 메모리 해제한 공간에 값 대입
                             char* emt_ = (char*)malloc(sizeof(char)*1);
                             strcpy(emt_,&empty);
                             s1[Day]->name[SUB] = emt_;
@@ -330,7 +329,7 @@ int schedule_delete(void){
                         break;
                     }
 
-                    else if (l == 0) {
+                    else if (l == 0) { // 길이가 0 이면 실행
                         printf("\n\t\t\t\t 해당 요일의 시간표가 비어있습니다.");
                         printf("\n\t\t\t    시간표를 입력하거나 불러온 뒤 사용해주세요.");
                         printf("\n\t\t\t\t\t   뒤로 넘어갑니다.\n");
@@ -344,7 +343,7 @@ int schedule_delete(void){
         }
 
         else if (num==3){
-            break;
+            break; // 뒤로가기
         }
 
         else {
@@ -354,7 +353,7 @@ int schedule_delete(void){
     return 0;
 }
 
-int schedule_import(void){
+int schedule_import(void){ // 시간표 추가 -> 입력을 받으면 값 저장을 못함.
     temp_sub *s1[Day_len];
 
     char sub_name[30];
@@ -369,24 +368,24 @@ int schedule_import(void){
         scanf("%d",&Day);
         Day -= 1;
 
-        while(Day<5){
+        while(Day<5){ // 추가 입력
             printf("\n\t\t\t\t\t 수업 이름 : ");
             scanf("%s",sub_name);
             l = strlen(sub_name);
             printf("\n\t\t\t\t        수업 시작 시간 : ");
             scanf("%d",&sub_num);
-            sub_num -= 1;
+            sub_num -= 1; // 배열을 위해 1을 뺌
             printf("\n\t\t\t\t\t 수업 시간 : ");
             scanf("%d",&sub_af);
 
             n = sub_num + sub_af;
-            k = strlen(s1[Day]->name[sub_num]);
+            k = strlen(s1[Day]->name[sub_num]); // 초기화를 할지 말지 결정하기 위해 배열의 길이를 구함.
 
-            if (k != 0){
-                for (int i = sub_num; i <n; i++){
+            if (k != 0){ // 안에 있는 값이 있다면
+                for (int i = sub_num; i <n; i++){ // 초기화를 해준다.
                     free(s1[Day]->name[i]);
                 }
-                while(sub_num<n){
+                while(sub_num<n){ // 그리고 그 곳에 값을 입력해줌.
                     char* sub_sub = (char*)malloc(sizeof(char)*(l+1));
                     strcmp(sub_sub,sub_name);
                     s1[Day]->name[sub_num] = sub_sub;
@@ -394,7 +393,7 @@ int schedule_import(void){
                 }
             }
 
-            else if (k == 0){
+            else if (k == 0){ // 값이 없다면 바로 입력
                 while(sub_num<n){
                     char* sub_sub = (char*)malloc(sizeof(char)*(l+1));
                     strcmp(sub_sub,sub_name);
@@ -407,20 +406,20 @@ int schedule_import(void){
             printf("\n\n\t\t\t\t     어디로 가시겠습니까? : ");
             scanf("%d",&num);
 
-            if (num==1){
+            if (num==1){ // 추가
                 continue;
             }
 
-            else if (num==2){
+            else if (num==2){ // 뒤로가기
                 break;
             }
             
-            else {
+            else { // 다시 입력
                 printf("\n\t\t\t\t\t  잘못입력하셨습니다.\n\t\t\t\t\t  다시 입력해주세요. \n");
             }
         }
 
-        if(Day==5){
+        if(Day==5){ // 메뉴로
             break;
         }
 
@@ -444,13 +443,20 @@ int schedule_search(void){
         scanf("%d",&num);
 
         if (num==1){
-            FILE *fp_1 = fopen(mem_,"r");
+            FILE *fp_1 = fopen(mem_,"r"); //
 
             if (fp_1==NULL){
                 printf("\t\t\t  없는 회원님입니다.\n\n\t\t   다른 회원님의 이름을 적어주세요.");
             }
 
             else if (fp_1 !=NULL){
+                for (int i = 0; i <= Day_len; i++){
+                    s2[i] = malloc(sizeof(struct subject_));
+                    for (int j = 0 ; j < schedule_time; j++){
+                        s2[i]->name_[j] = (char*)malloc(sizeof(char)*1);
+                    }
+                }
+
                 while(1){
                     printf("\n\t\t\t\t\t시간표 관리 프로그램");
                     printf("\n\t\t\t\t===================================");
@@ -499,9 +505,9 @@ int schedule_store(void){
     for (int i = 0; i <= Day_len ; i++){
        
         for (int j = 0; j<schedule_time; j++){
-            char sub[30]={0,};
+            char sub[30]={0,}; // 각 시간표의 결과 값을 저장하기 위한 배열
 
-            strcpy(sub,s1[i]->name[j]);
+            strcpy(sub,s1[i]->name[j]); // 각 시간표의 값을 복사함
 
             fprintf(fp2,"%s\n",sub);
             fprintf(fp3,"%s\n",sub);
@@ -517,21 +523,26 @@ int schedule_call(void){ // 시간표 불러오기
     temp_sub *s1[Day_len];
     temp_infor t1;
 
-
+    for (int i = 0; i <= Day_len; i++){
+        s1[i] = malloc(sizeof(struct subject));
+        for (int j = 0 ; j < schedule_time; j++){
+            s1[i]->name[j] = (char*)malloc(sizeof(char)*1);
+        }
+    }
 
     return 0;
 }
 
-int main(){
+int main(){ // 메인함수
     while(1){
     int menu = display_menu();
 
         if (menu == 1){
-            int m = login(); // 로그인메뉴로
+            int m = login(); // 로그인메뉴
             if (m == 1){
                 main_1(); // 로그인이 되었다면 후의 메인메뉴로
             }
-            else {
+            else { //안되면 다시 메인메뉴로
                 continue;
             }
         }
@@ -548,7 +559,7 @@ int main(){
 return 0;
 }
 
-int display_menu(void){
+int display_menu(void){ // 메뉴 인터페이스
     int menu_num = 0;
 
     while(1){
@@ -620,7 +631,7 @@ int membership_store(void){ // 회원가입
     return 0;
 }
 
-int login(void){ 
+int login(void){ // 로그인
     temp_infor t1;
 
     char password1[30]={0,};
@@ -639,7 +650,7 @@ int login(void){
 
         if (fp == NULL){ // 파일이 없어 NULL값을 반환하면 실행
             printf("\n\t\t\t\t\t없는 아이디입니다.\n\t\t\t\t\t메인메뉴로 넘어갑니다.\n");
-            return 0;
+            return 0; // 반복문 돌리기
         }
 
         else if (fp != NULL){
@@ -658,13 +669,13 @@ int login(void){
 
             if (re == 0){ 
                 printf("\n\t\t\t\t\t     환영합니다.\n");
-                int n = 1;
-                return n;
+                int n = 1; 
+                return n; // 제대로 로그인이 되어있는지 아니면 틀렸는데 넘어가는지 확인하기위한 리턴 값
             }  
 
             else if (re != 1) {
                 printf("\n\t\t\t\t\t비밀번호가 틀렸습니다. \n");
-                continue;
+                continue; // 반복문 돌리기
             }
         }
     fclose(fp);
