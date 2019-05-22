@@ -10,7 +10,7 @@
 #define PASSWORD_len 30
 #define BIRTH_len 20
 #define schedule_time 10
-#define Day_len 4
+#define Day_len 5
 
 int display_menu(void); // 메인메뉴를 보여줌
 int membership_store(void); // 회원가입
@@ -154,13 +154,14 @@ int schedule_add(void){ // 잘못입력했을 때 뒤로 넘어가는게 있으�
     char empty = '-';
     int time_ = 0, ext = 0;
     int time_1 = 0, time_2 = 0;
-    int l = 0 , k=0 ;
+    int l = 0, k =0;
+    static int n = 0;
 
-    for (int i = 0; i <= Day_len; i++){
+    for (int i = 0; i < Day_len; i++){
         s1[i] = malloc(sizeof(struct subject));
-        for (int j = 0 ; j < schedule_time; j++){
-            s1[i]->name[j] = (char*)malloc(sizeof(char)*1);
-        }
+        // for (int j = 0 ; j < schedule_time; j++){
+        //     s1[i]->name[j] = (char*)malloc(sizeof(char)*1);
+        // }
     }
 
     while (1){
@@ -169,10 +170,10 @@ int schedule_add(void){ // 잘못입력했을 때 뒤로 넘어가는게 있으�
         printf("\n\t\t\t\t    1.월요일  2.화요일  3.수요일\n\t\t\t\t    4.목요일  5.금요일  6.뒤로가기\n");
         printf("\n\t\t\t\t 무슨 요일에 입력하시겠습니까? : ");
         scanf("%d",&k); 
-        k -= 1;
-        static int n = 0;
+        k = k - 1;
 
-        if (k<5){ // 요일의 숫자를 적으면 실행
+        if (k<Day_len){ // 요일의 숫자를 적으면 실행
+            n = 0;
             while (n<schedule_time){
                 printf("\n\t\t\t\t      1.시간표 입력  2.뒤로가기");
                 printf("\n\n\t\t\t\t     어디로 가시겠습니까? : ");
@@ -196,14 +197,14 @@ int schedule_add(void){ // 잘못입력했을 때 뒤로 넘어가는게 있으�
                     l = strlen(sub_name); // 입력받은 과목명 길이의 값을 가져옴
                     printf("\n\t\t\t\t        수업 시작 시간 : ");
                     scanf("%d",&time_2); 
-                    time_2 -= 1; // 배열을 위해 1을 빼줌 
                     printf("\n\t\t\t\t\t 수업 시간 : ");
                     scanf("%d",&time_);
-                    time_ += n;
+                    // time_ += n;
                     printf("\n\t\t\t\t     다음 수업까지 빈 시간 : ");
                     scanf("%d",&time_1); 
 
                     if (l>0){ // l의 값이 0 이상이면
+                        time_2 -= 1; // 배열을 위해 1을 빼줌 
                         while (n<time_+time_2){ // 정적변수 n의 값을 i에 대입시켜       반복문 실행 
                             char* sub = (char*)malloc(sizeof (char)*(l+1)); //sub이라는 포인터에 입력받은 과목명 길이만큼 동적할당을 해줌
                             while (n<time_2){ // 앞에 빈 시간을 공백으로 채워줌
@@ -216,7 +217,7 @@ int schedule_add(void){ // 잘못입력했을 때 뒤로 넘어가는게 있으�
                             s1[k]->name[n] = sub; // 각 교시에 맞게 대입시키고 2중 포인터 사용
                             n++;
                         }
-                        if (time_1!=0){ // 중간의 빈 시간이 0이 아니면 실행
+                        if (time_1>=0){ // 중간의 빈 시간이 0이 아니면 실행
                             time_1 += n; // 위에나온 값에서 다시 더해줌
                             while (n<time_1){ // 중간의 빈 시간을 공백으로 채워줌
                                 char* emp_ = (char*)malloc(sizeof (char)*1);
@@ -225,6 +226,9 @@ int schedule_add(void){ // 잘못입력했을 때 뒤로 넘어가는게 있으�
                                 n++;
                             }
                             continue;
+                        }
+                        else {
+                            printf("\n\t\t\t\t\t  잘못입력하셨습니다.\n\t\t\t\t\t    뒤로 돌아갑니다. \n");
                         }
                     }
                     else
@@ -235,10 +239,11 @@ int schedule_add(void){ // 잘못입력했을 때 뒤로 넘어가는게 있으�
                 }
                 else{
                     printf("\n\t\t\t\t\t  잘못입력하셨습니다.\n\t\t\t\t\t  다시 입력해주세요. \n");
+                    continue;
                 }
             }
         }
-        else if (k == 5){
+        else if (k == Day_len){
             break;
         }
     }
