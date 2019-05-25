@@ -20,6 +20,7 @@ int main_menu(void); // 로그인 후 메인메뉴
 int main_1(void); // 로그인 후 메인메뉴의 메인
 int schedule_watch(void); // 시간표 확인
 int schedule_search(void); // 시간표 검색
+int schedule_search_watch(void); // 검색한 시간표 확인
 int schedule_add(void); // 시간표 추가
 int schedule_delete(void); // 시간표 삭제 
 int schedule_store(void); // 시간표 저장
@@ -27,7 +28,7 @@ int schedule_import(void); // 시간표 입력
 int schedule_call(void); // 시간표 불러오기
 int schedule_call_(void); // 시간표 불러오기2
 int schedule_exit(void); // 종료
-int schedule_list(void); // 수정한 목록
+// int schedule_list(void); // 수정한 목록 (보류)
 
 char id1[30] = {0,}; // 파일 불러오기 위한 아이디
 
@@ -206,7 +207,7 @@ int schedule_watch(void){ // 시간표 출력
 int schedule_add(void){ // 잘못입력했을 때 뒤로 넘어가는게 있으면 좋겠다.
     temp_sub *s1[Day_len]; // 구조체 포인터 배열로 요일을 정함
 
-    char sub_name[50];
+    char sub_name[50]={0,};
     char empty[6] = "(X)";
     int time_ = 0, ext = 0, time_st = 0;
     int len = 0, Day =0, num=0;
@@ -403,7 +404,7 @@ int schedule_delete(void){ // 시간표 삭제
 int schedule_import(void){ // 시간표 추가 -> 입력을 받으면 값 저장을 못함.
     temp_sub *s1[Day_len];
 
-    char sub_name[50];
+    char sub_name[50]={0,};
     int Day=0,num=0,len=0,len1=0;
     int sub_num=0, sub_af=0;
 
@@ -478,49 +479,112 @@ int schedule_import(void){ // 시간표 추가 -> 입력을 받으면 값 저장
 }
 
 int schedule_search(void){ // 시간표 검색하기
-    temp_sub *s1[Day_len];
     temp_sub1 *s2[Day_len];
     temp_infor t1;
 
-    int num=0,num1=0;
+    int num=0, len = 0;
     char mem_[NAME_len]={0,};
+    char major_[MAJOR_len] = {0,};
 
     while(1){
         printf("\n\t\t\t\t\t시간표 관리 프로그램");
         printf("\n\t\t\t\t===================================");
-        printf("\n\t\t\t\t  1.이름으로 확인  2.학번으로 확인\n\t\t\t\t  3.나가기\n");
+        printf("\n\t\t\t\t  1.이름으로 확인  2.학번으로 확인\n\t\t\t\t  3.뒤로가기\n");
         printf("\n\t\t\t\t    어디로 가시겠습니까? : ");
         scanf("%d",&num);
 
         if (num==1){
+            printf("\n\t\t\t\t\t검색할 이름 : ");
+            scanf("%s",mem_);
+
             FILE *fp_1 = fopen(mem_,"r"); //
 
             if (fp_1==NULL){
-                printf("\t\t\t  없는 회원님입니다.\n\n\t\t   다른 회원님의 이름을 적어주세요.");
+                printf("\n\t\t\t\t\t  없는 회원님입니다.\n\t\t\t\t   다른 회원님의 이름을 적어주세요.");
             }
 
             else if (fp_1 !=NULL){
                 for (int i = 0; i < Day_len; i++){
-                    s2[i] = malloc(sizeof(struct subject_));
+                    s2[i] = malloc(sizeof(struct subject));
                     for (int j = 0 ; j < schedule_time; j++){
-                        s2[i]->name_[j] = (char*)malloc(sizeof(char)*1);
+                        char sub[50] = {0,}; // 읽어올 과목을 저장할 문자열
+
+                        fgets(sub,sizeof(sub),fp_1); // 한줄씩 읽어옴
+                        sub[strlen(sub)-1] = '\0'; // 마지막엔 공백처리
+            
+                        len = strlen(sub); // 읽어온 과목의 길이 구함
+
+                        char *sub_s = (char*)malloc(sizeof(char)*(len+1));
+                        strcpy(sub_s,sub);
+                        s2[i]->name_[j] = sub_s;
                     }
                 }
-
-                while(1){
-                    printf("\n\t\t\t\t\t시간표 관리 프로그램");
-                    printf("\n\t\t\t\t===================================");
-                    printf("\n\t\t\t\t    1.월요일  2.화요일  3.수요일\n\t\t\t\t    4.목요일  5.금요일  6.뒤로가기\n");
-                    printf("\n\t\t\t\t 무슨 요일을 출력하시겠습니까? : ");
-                    scanf("%d",&num1);
-                    num1 -= 1;
-
-                    if (num1 == 5){
-                        break;
-                    }
-                }
+                schedule_search_watch();
+                continue;
             }
             fclose(fp_1);
+        }
+        else if (num == 2){
+            printf("\n\t\t\t\t\t검색할 학번 : ");
+            scanf("%s",major_);
+
+            FILE *fp_2 = fopen(major_,"r");
+
+            if (fp_2 == NULL){
+                printf("\n\t\t\t\t\t  없는 회원님입니다.\n\t\t\t\t   다른 회원님의 이름을 적어주세요.");
+            }
+            else if (fp_2 != NULL){
+                for (int i = 0; i < Day_len; i++){
+                    s2[i] = malloc(sizeof(struct subject));
+                    for (int j = 0 ; j < schedule_time; j++){
+                        char sub1[50] = {0,}; // 읽어올 과목을 저장할 문자열
+
+                        fgets(sub1,sizeof(sub1),fp_2); // 한줄씩 읽어옴
+                        sub1[strlen(sub1)-1] = '\0'; // 마지막엔 공백처리
+            
+                        len = strlen(sub1); // 읽어온 과목의 길이 구함
+
+                        char *sub_s1 = (char*)malloc(sizeof(char)*(len+1));
+                        strcpy(sub_s1,sub1);
+                        s2[i]->name_[j] = sub_s1;
+                    }
+                }
+                schedule_search_watch();
+                continue;
+            }
+            fclose(fp_2);
+        }
+        else if (num == 3){
+            break;
+        }
+        else {
+            printf("\n\t\t\t\t\t  잘못입력하셨습니다.\n\t\t\t\t\t  다시 입력해주세요. \n");
+        }
+    }
+    return 0;
+}
+
+int schedule_search_watch(void){
+    temp_sub1 *s2[Day_len];
+
+    int num = 0;
+
+    while(1){
+        printf("\n\t\t\t\t\t시간표 관리 프로그램");
+        printf("\n\t\t\t\t===================================");
+        printf("\n\t\t\t\t    1.월요일  2.화요일  3.수요일\n\t\t\t\t    4.목요일  5.금요일  6.뒤로가기\n");
+        printf("\n\t\t\t\t 무슨 요일을 출력하시겠습니까? : ");
+        scanf("%d",&num);
+        num -= 1;
+
+        if (num < 5){ // 5보다 작으면 실행
+            for (int i =0 ;i <schedule_time; i++){
+                printf("\t\t\t\t\t %02d교시 : %s\n",i+1,s2[num]->name_[i]);
+                }
+            continue; // 다시 while문으로
+        }
+        else if (num == 5){
+            break;
         }
     }
     return 0;
@@ -596,9 +660,9 @@ int schedule_call(void){ // 시간표 불러오기
         for (int i = 0; i < Day_len; i++){
             s1[i] = malloc(sizeof(struct subject));
             for (int j = 0 ; j < schedule_time; j++){
-                char sub[50]; // 읽어올 과목을 저장할 문자열
+                char sub[50] = {0,}; // 읽어올 과목을 저장할 문자열
 
-                fgets(sub,sizeof(sub),fp); // 한줄씩 읽어옴
+                fgets(sub,sizeof(sub),fp1); // 한줄씩 읽어옴
                 sub[strlen(sub)-1] = '\0'; // 마지막엔 공백처리
             
                 len = strlen(sub); // 읽어온 과목의 길이 구함
@@ -622,6 +686,8 @@ int schedule_call(void){ // 시간표 불러오기
 }
 
 int schedule_call_(void){ // 이미 데이터가 있는데 눌렀을 경우를 대비함.
+    temp_sub *s1[Day_len];
+
     int num = 0;
     
     printf("\n\t\t\t\t\t      ※ 중요 ※\n\t\t\t\t       1.불러오기  2.뒤로가기\n\t\t\t\t     이미 데이터가 있습니다. : ");
