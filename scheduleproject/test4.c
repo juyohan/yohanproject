@@ -11,6 +11,7 @@
 #define BIRTH_len 20
 #define schedule_time 10
 #define Day_len 5
+#define MAX 100
 
 int display_menu(void); // 메인메뉴를 보여줌
 int membership_store(void); // 회원가입
@@ -27,9 +28,22 @@ int schedule_import(void); // 시간표 입력
 int schedule_call(void); // 시간표 불러오기
 int schedule_call_(void); // 시간표 불러오기2
 int schedule_exit(void); // 종료
+void init_stack(void); // 스택 초기화
+int push(int t); // 스택 추가
+int pop(void); // 스택 삭제
+int get_stack_top(void); // 스택의 top의 값을 가져옴
+int is_stack_empty(void); // 스택이 비어있는지 검사
+int is_operator(int k); // k가 연산자인지 확인
+int is_legal(char *s); // 후위표기법 수식이 맞는지 체크
+int precedence(int op); // 연산자의 우선순위를 변환
+void postfix(char *dst, char *src); // 후위표기법으로 변환
+int calc(char *p); // 후위표기법으로 계산
+int calc_result(void);
 
 char id1[30] = {0,}; // 파일 불러오기 위한 아이디
 char Day_[5][10] = {"월요일", "화요일", "수요일", "목요일", "금요일"};
+int stack[MAX];        // 스택
+int top;            // 스택의 상단
 
 typedef struct information { // 회원정보를 입력받을 구조체
     char name[NAME_len];
@@ -124,6 +138,9 @@ int main_1(void){
             }
         }
         else if (menu_1 == 8){
+            calc_result();
+        }
+        else if (menu_1 == 9){
             schedule_exit(); // 나가기
         }
     }
@@ -142,12 +159,13 @@ int main_menu(void){ // 시간표 메뉴
         printf("\n\t\t\t\t  1. 시간표 보기   2. 시간표 입력");
         printf("\n\n\t\t\t\t  3. 시간표 추가   4. 시간표 삭제");
         printf("\n\n\t\t\t\t  5. 시간표 검색   6. 시간표 저장");
-        printf("\n\n\t\t\t\t  7. 시간표 불러오기   8. 나가기");
+        printf("\n\n\t\t\t\t 7. 시간표 불러오기 8. 학점 계산기");
+        printf("\n\n\t\t\t\t  9. 나가기 ");
         printf("\n\t\t\t\t===================================");
         printf("\n\n\t\t\t\t     어디로 가시겠습니까? : ");
         scanf("%d",&menu2_num);
 
-        if (menu2_num<1||menu2_num>8){
+        if (menu2_num<1||menu2_num>9){
             printf("\n\t\t\t\t\t  잘못입력하셨습니다.\n\t\t\t\t\t  다시 입력해주세요. \n");
             continue;
         }
@@ -748,6 +766,183 @@ int schedule_exit(void){ // 시간표 종료
     }
 
     exit(1); // 나가기
+
+    return 0;
+}
+
+void init_stack(void){
+    top = -1;
+}
+
+int push(int t){
+
+    if (top >= MAX - 1){
+        printf("\n\t\t\t\t\t     Stack overflow.");
+        return -1;
+    }
+
+    stack[++top] = t;
+    return t;
+}
+
+int pop(void){
+    if (top < 0){
+        printf("\n\t\t\t\t\t    Stack underflow.");
+        return -1;
+    }
+    return stack[top--];
+}
+
+// 스택의 TOP의 값을 가져온다.
+int get_stack_top(void){
+    return (top < 0) ? -1 : stack[top];
+}
+
+// 스택이 비어있는지 검사
+int is_stack_empty(void){
+    return (top < 0);
+}
+
+// k 가 연산자인지 판단한다.
+int is_operator(int k){
+    return (k == '+' || k == '-' || k == '*' || k == '/');
+}
+
+// 후위표기법 수식이 적접한가 체크
+int is_legal(char *s){
+    int f = 0;
+    while (*s){
+        // 처음 공백 넘어가기
+        while (*s == ' '){
+            s++;
+        }
+
+        if (is_operator(*s)){
+            f--;
+        }
+        else{
+            f++;
+            while (*s != ' '){
+                s++;
+            }
+        }
+        if (f < 1) break;
+        s++;
+    }
+    return (f == 1);
+}
+
+// 연산자의 우선순위를 수치로 변환해준다.
+int precedence(int op){
+    if (op == '(') return 0;
+    if (op == '+' || op == '-') return 1;
+    if (op == '*' || op == '/') return 2;
+    else return 3;
+}
+
+// 중위표기법을 후위표기법으로 변환
+void postfix(char *dst, char *src){
+    char c;
+    init_stack();
+    while (*src){
+        if (*src == '('){
+            push(*src);
+            src++;
+        }
+        else if (*src == ')'){
+            while (get_stack_top() != '('){
+                *dst++ = pop();
+                *dst++ = ' ';
+            }
+            pop();
+            src++;
+        }
+        else if (is_operator(*src)){
+            while (!is_stack_empty() &&
+                precedence(get_stack_top()) >= precedence(*src)){
+                *dst++ = pop();
+                *dst++ = ' ';
+            }
+            push(*src);
+            src++;
+        }
+        else if (*src >= '0' && *src <= '9'){
+            do{
+                *dst++ = *src++;
+            } while (*src >= '0' && *src <= '9');
+            *dst++ = ' ';
+        }
+        else{
+            src++;
+        }
+    }
+
+    while (!is_stack_empty()){
+        *dst++ = pop();
+        *dst++ = ' ';
+    }
+    dst--;
+    *dst = 0;
+}
+
+// 후위표기법을 계산한다.
+int calc(char *p){
+    int i;
+    init_stack();
+    while (*p){
+        if (*p >= '0' && *p <= '9'){
+            i = 0;
+            do{
+                i = i * 10 + *p - '0';
+                p++;
+            } while (*p >= '0' && *p <= '9');
+            push(i);
+        }
+        else if (*p == '+'){
+            push(pop() + pop());
+            p++;
+        }
+        else if (*p == '*'){
+            push(pop() * pop());
+            p++;
+        }
+        else if (*p == '-'){
+            i = pop();
+            push(pop() - i);
+            p++;
+        }
+        else if (*p == '/'){
+            i = pop();
+            push(pop() / i);
+            p++;
+        }
+        else{
+            p++;
+        }
+    }
+    return pop();
+}
+
+int calc_result(void){
+    int r,u;
+    char exp[256];
+    char pf[256];
+
+    printf("\n\t\t\t\t\t     학점 계산기");
+    printf("\n\t\t\t\t===================================");
+    printf("\n\n\t\t\t\t\t  ex) 13+20+13");
+    printf("\n\t\t\t\t 학점을 입력해주세요. : ");
+    scanf("%s",exp);
+    postfix(pf, exp);
+
+    if (!is_legal(pf)){
+        printf("\n\t\t\t\t    Exprssion is legal!");
+        exit(1);
+    }
+    r = calc(pf);
+    printf("\n\t\t\t\t\t 취득한 학점 : %d",r );
+    u = 127 - r;
+     printf("\n\t\t\t\t\t  남은 학점 : %d\n", u);
 
     return 0;
 }
