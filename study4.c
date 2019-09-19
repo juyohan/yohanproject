@@ -10,6 +10,10 @@ int main()
         b = a * i;
         printf("%d x %d = %d\n",a,i,b);
     }
+    for (int j = 10; j > 0 ; j--){
+        b = a * j;
+        printf("%d x %d = %d\n",a,i,b);
+    }
     return 0;
 }
 
