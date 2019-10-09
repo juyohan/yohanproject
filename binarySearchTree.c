@@ -89,17 +89,55 @@ void BST_print(Node* root)
 int main()
 {
     int i = 0;
-    int num[10],temp;
+    int arr[10],temp;
     printf("이진탐색트리에 넣을 숫자 10개를 입력해주세요. : ");
     while (i < 10){
-        scanf("%d",&num[i]);
-        root = BST_insert(root, num[i]);
+        scanf("%d",&arr[i]);
+        root = BST_insert(root, arr[i]);
         i++;
     }
     
-    printf("입력한 숫자들 중 삭제할 숫자를 입력해주세요. : ");
-    scanf("%d",&temp);
-    root = BST_delete(root, temp);
+    int tmp = 0, tmp1 = 0;
 
-    BST_print(root);
+    while(1){
+        printf("1. 검색, 2. 삭제, 3. 종료 : ");
+        scanf("%d",&tmp);
+        // Node *root = NULL;
+
+        while (1){
+            if (tmp == 1){
+                printf("검색할 숫자를 입력해주세요. : ");
+                scanf("%d",&tmp1);
+                
+                root = BST_search(root, tmp1);
+                if (root == NULL){
+                    printf("검색한 숫자가 없습니다.처음으로 돌아갑니다.\n");
+                    break;
+                }
+                else {
+                    printf("해당 부모부터 탐색한 결과값 \n: ");
+                    BST_print(root);
+                    printf("\n");
+                    break;
+                }
+            }
+
+            else if  (tmp == 2){
+                printf("입력한 숫자들 중 삭제할 숫자를 입력해주세요. : ");
+                scanf("%d",&temp);
+                root = BST_delete(root, temp);
+                break;
+            }
+
+            else if (tmp == 3){
+                printf("프로그램을 종료합니다.\n");
+                exit(1);
+            }
+
+            else {
+                printf("숫자를 잘 못 입력하셨습니다. 처음으로 돌아갑니다.\n");
+                break;
+            }
+        }
+    }
 }
