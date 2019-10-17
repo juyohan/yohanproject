@@ -97,15 +97,18 @@ int main()
     for (int i = 0 ; i < 100; i++){
         arr[i] = (rand() % 100) + 1;
 
-        for(int j=0; j<i;j++){
-            if(arr[i] != arr[j]){
-                root = BST_insert(root, arr[i]);
+        for (int j = 0 ; j < i ; j++){
+            if (arr[i] == arr[j]){
+                i--;
+                break;
             }
-            else if (arr[i]==arr[j]){
-            i--;
-        }
         }
     }
+
+    for (int i = 0 ; i < 100 ; i++){
+        printf("%d  ",arr[i]);
+    }
+    printf("\n");
     
     int tmp = 0, tmp1 = 0;
 
