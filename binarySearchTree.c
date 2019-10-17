@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct NodeStruct
 {
@@ -89,12 +90,21 @@ void BST_print(Node* root)
 int main()
 {
     int i = 0;
-    int arr[10],temp;
-    printf("이진탐색트리에 넣을 숫자 10개를 입력해주세요. : ");
-    while (i < 10){
-        scanf("%d",&arr[i]);
-        root = BST_insert(root, arr[i]);
-        i++;
+    int arr[100],temp;
+
+    srand(time(NULL));
+
+    for (int i = 0 ; i < 100; i++){
+        arr[i] = (rand() % 100) + 1;
+
+        for(int j=0; j<i;j++){
+            if(arr[i] != arr[j]){
+                root = BST_insert(root, arr[i]);
+            }
+            else if (arr[i]==arr[j]){
+            i--;
+        }
+        }
     }
     
     int tmp = 0, tmp1 = 0;
